@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,10 +19,11 @@ namespace BRICKS
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<Bricks> list = [];
+        ObservableCollection<Bricks> list = [];
         public MainWindow()
         {
             InitializeComponent();
+            dgBricks.ItemsSource = list;
             btnBetoltes.Click += (s, e) =>
             {
                 OpenFileDialog ofd = new OpenFileDialog();
@@ -30,10 +32,10 @@ namespace BRICKS
                     XDocument document = XDocument.Load(ofd.FileName);
 
                     document.Descendants("Item").ToList().ForEach(x =>
-                        list.Add(new Bricks($"{x.Element("ItemID").Value};{x.Element("ItemName").Value};{x.Element("CategoryName").Value};{x.Element("ColorName").Value};" +
-                            $"{x.Element("Qty").Value}")));
+                        list.Add(new Bricks($"{x.Element("ItemID")?.Value};{x.Element("ItemName")?.Value};{x.Element("CategoryName")?.Value};{x.Element("ColorName")?.Value};" +
+                            $"{x.Element("Qty")?.Value}")));
                 }
-                dgBricks.ItemsSource = list;
+                MessageBox.Show($"{dgBricks.Items.Count} - {list.Count}");
             };
 
             tbKeresNev.TextChanged += (s, e) =>
@@ -49,14 +51,26 @@ namespace BRICKS
             tbKeresId.TextChanged += (s, e) => 
             {
                 if (tbKeresNev.Text != "")
-                    dgBricks.ItemsSource = list.Where(x => x.ItemName.ToLower().StartsWith($"{tbKeresNev.Text.ToLower()}") 
+                    dgBricks.ItemsSource = list.Where(x => x.ItemName.ToLower().StartsWith($"{tbKeresNev.Text.ToLower()}")
                     && x.ItemID.StartsWith($"{tbKeresId.Text}"));
 
                 else
-                    dgBricks.ItemsSource = list.Where(x => x.ItemName.ToLower().StartsWith($"{tbKeresId.Text.ToLower()}"));
+                    dgBricks.ItemsSource = list.Where(x => x.ItemID.StartsWith($"{tbKeresId.Text}"));
+            };
+
+            btnTorles.Click += (s, e) =>
+            {
+                if (dgBricks.SelectedItems.Count == 1)
+                {
+                    if (dgBricks.SelectedIndex != -1)
+                        list.RemoveAt(dgBricks.SelectedIndex);
+                    else
+                        MessageBox.Show("Nincs sor kijelölve!");
+                }
+                else
+                    foreach (var item in dgBricks.SelectedItems.Cast<Bricks>().ToList())
+                        list.Remove(item);
             };
         }
-
-
     }
 }
