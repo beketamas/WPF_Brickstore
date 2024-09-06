@@ -39,19 +39,21 @@ namespace BRICKS
             tbKeresNev.TextChanged += (s, e) =>
             {
                 if (tbKeresId.Text != "")
-                    dgBricks.ItemsSource = list.Where(x => x.ItemName.StartsWith($"{tbKeresNev.Text}") && x.ItemID.StartsWith($"{tbKeresId.Text}"));
+                    dgBricks.ItemsSource = list.Where(x => x.ItemName.ToLower().StartsWith($"{tbKeresNev.Text.ToLower()}") &&
+                    x.ItemID.StartsWith($"{tbKeresId.Text}"));
 
                 else
-                    dgBricks.ItemsSource = list.Where(x => x.ItemName.StartsWith($"{tbKeresNev.Text}"));
+                    dgBricks.ItemsSource = list.Where(x => x.ItemName.ToLower().StartsWith($"{tbKeresNev.Text.ToLower()}"));
             };
 
             tbKeresId.TextChanged += (s, e) => 
             {
                 if (tbKeresNev.Text != "")
-                    dgBricks.ItemsSource = list.Where(x => x.ItemName.StartsWith($"{tbKeresNev.Text}") && x.ItemID.StartsWith($"{tbKeresId.Text}"));
+                    dgBricks.ItemsSource = list.Where(x => x.ItemName.ToLower().StartsWith($"{tbKeresNev.Text.ToLower()}") 
+                    && x.ItemID.StartsWith($"{tbKeresId.Text}"));
 
                 else
-                    dgBricks.ItemsSource = list.Where(x => x.ItemName.StartsWith($"{tbKeresId.Text}"));
+                    dgBricks.ItemsSource = list.Where(x => x.ItemName.ToLower().StartsWith($"{tbKeresId.Text.ToLower()}"));
             };
         }
 
