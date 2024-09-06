@@ -22,18 +22,21 @@ namespace BRICKS
         public MainWindow()
         {
             InitializeComponent();
-            OpenFileDialog ofd = new OpenFileDialog();
-            if (ofd.ShowDialog() == true)
+            btnBetoltes.Click += (s, e) =>
             {
-                XDocument document = XDocument.Load(ofd.FileName);
-                foreach (var elem in document.Descendants("Item"))
+                OpenFileDialog ofd = new OpenFileDialog();
+                if (ofd.ShowDialog() == true)
                 {
-                    list.Add(new Bricks($"{elem.Element("ItemID").Value};{elem.Element("ItemName").Value};{elem.Element("CategoryName").Value};{elem.Element("ColorName").Value};" +
-                        $"{elem.Element("Qty").Value}"));
+                    XDocument document = XDocument.Load(ofd.FileName);
+
+                    document.Descendants("Item").ToList().ForEach(x =>
+                        list.Add(new Bricks($"{x.Element("ItemID").Value};{x.Element("ItemName").Value};{x.Element("CategoryName").Value};{x.Element("ColorName").Value};" +
+                            $"{x.Element("Qty").Value}")));
                 }
-            }
-            MessageBox.Show($"{list.First().ItemName}");
-            dgBricks.ItemsSource = list;
+                dgBricks.ItemsSource = list;
+            };
+
+
         }
     }
 }
