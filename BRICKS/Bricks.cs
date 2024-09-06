@@ -6,28 +6,28 @@ using System.Threading.Tasks;
 
 namespace BRICKS
 {
-    internal class Bricks
+    public class Bricks
     {
         string itemID;
         string itemName;
-        string CategoryName;
-        string ColorName;
-        int Qty;
+        string categoryName;
+        string colorName;
+        int qty;
 
         public Bricks(string sor)
         {
             string[] tomb = sor.Split(';');
             itemID = tomb[0];
             itemName = tomb[1];
-            CategoryName = tomb[2];
-            ColorName = tomb[3];
-            Qty = int.Parse(tomb[4]);
+            categoryName = tomb[2];
+            colorName = tomb[3];
+            qty = int.Parse(tomb[4]);
         }
 
         public string ItemID  => itemID;
         public string ItemName => itemName;
-        public string CategoryName1 => CategoryName;
-        public string ColorName1  => ColorName; 
-        public int Qty1  => Qty;
+        public string CategoryName => categoryName;
+        public string ColorName  => colorName; 
+        public int Qty  => qty;
     }
 }

@@ -35,7 +35,6 @@ namespace BRICKS
                         list.Add(new Bricks($"{x.Element("ItemID")?.Value};{x.Element("ItemName")?.Value};{x.Element("CategoryName")?.Value};{x.Element("ColorName")?.Value};" +
                             $"{x.Element("Qty")?.Value}")));
                 }
-                MessageBox.Show($"{dgBricks.Items.Count} - {list.Count}");
             };
 
             tbKeresNev.TextChanged += (s, e) =>
@@ -48,7 +47,7 @@ namespace BRICKS
                     dgBricks.ItemsSource = list.Where(x => x.ItemName.ToLower().StartsWith($"{tbKeresNev.Text.ToLower()}"));
             };
 
-            tbKeresId.TextChanged += (s, e) => 
+            tbKeresId.TextChanged += (s, e) =>
             {
                 if (tbKeresNev.Text != "")
                     dgBricks.ItemsSource = list.Where(x => x.ItemName.ToLower().StartsWith($"{tbKeresNev.Text.ToLower()}")
@@ -62,8 +61,8 @@ namespace BRICKS
             {
                 if (dgBricks.SelectedItems.Count == 1)
                 {
-                    if (dgBricks.SelectedIndex != -1)
-                        list.RemoveAt(dgBricks.SelectedIndex);
+                    if (dgBricks.SelectedIndex != -1 && dgBricks.SelectedItem is Bricks)
+                        list.Remove(dgBricks.SelectedItem as Bricks);
                     else
                         MessageBox.Show("Nincs sor kijelölve!");
                 }
