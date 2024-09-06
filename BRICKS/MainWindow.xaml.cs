@@ -36,7 +36,25 @@ namespace BRICKS
                 dgBricks.ItemsSource = list;
             };
 
+            tbKeresNev.TextChanged += (s, e) =>
+            {
+                if (tbKeresId.Text != "")
+                    dgBricks.ItemsSource = list.Where(x => x.ItemName.StartsWith($"{tbKeresNev.Text}") && x.ItemID.StartsWith($"{tbKeresId.Text}"));
 
+                else
+                    dgBricks.ItemsSource = list.Where(x => x.ItemName.StartsWith($"{tbKeresNev.Text}"));
+            };
+
+            tbKeresId.TextChanged += (s, e) => 
+            {
+                if (tbKeresNev.Text != "")
+                    dgBricks.ItemsSource = list.Where(x => x.ItemName.StartsWith($"{tbKeresNev.Text}") && x.ItemID.StartsWith($"{tbKeresId.Text}"));
+
+                else
+                    dgBricks.ItemsSource = list.Where(x => x.ItemName.StartsWith($"{tbKeresId.Text}"));
+            };
         }
+
+
     }
 }
