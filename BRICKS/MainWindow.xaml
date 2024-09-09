@@ -8,7 +8,7 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="5*"></RowDefinition>
+            <RowDefinition Height="2.5*"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
 
@@ -20,14 +20,14 @@
                 Height="50"
                 Width="100"
                 HorizontalAlignment="Left"
-                Margin="10 0 0 0">
+                Margin="10 0 0 60">
         </Button>
         <Label Content="Név:"
                Grid.Row="1"
                 Height="50"
                 Width="75"
                 HorizontalAlignment="Left"
-                Margin="120 0 0 0"
+                Margin="120 0 0 60"
                 HorizontalContentAlignment="Center"
                VerticalContentAlignment="Center"
                FontSize="20">
@@ -37,7 +37,7 @@
                 Height="40"
                 Width="200"
                 HorizontalAlignment="Left"
-                Margin="200 0 0 0"
+                Margin="200 0 0 60"
                 x:Name="tbKeresNev"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center">
@@ -47,7 +47,7 @@
                 Height="50"
                 Width="85"
                 HorizontalAlignment="Left"
-                Margin="410 0 0 0"
+                Margin="410 0 0 60"
                 HorizontalContentAlignment="Center"
                VerticalContentAlignment="Center"
                FontSize="20">
@@ -57,7 +57,7 @@
                 Height="40"
                 Width="200"
                 HorizontalAlignment="Left"
-                Margin="480 0 0 0"
+                Margin="480 0 0 60"
                 x:Name="tbKeresId"
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center">
@@ -68,8 +68,22 @@
                 Height="50"
                 Width="90"
                 HorizontalAlignment="Right"
-                Margin="0 0 5 0">
+                Margin="0 0 5 60">
 
         </Button>
+
+        <ComboBox
+            x:Name="cbKategoriak"
+            Height="40"
+            Width="200"
+            HorizontalAlignment="Center"
+            Grid.Row="1"
+            VerticalAlignment="Bottom"
+            Margin="0 0 0 20"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center">
+            
+        </ComboBox>
+        
     </Grid>
 </Window>
