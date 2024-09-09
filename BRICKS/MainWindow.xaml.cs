@@ -52,6 +52,8 @@ namespace BRICKS
 
             tbKeresNev.TextChanged += (s, e) =>
             {
+
+                
                 if (tbKeresId.Text != "")
                     dgBricks.ItemsSource = list.Where(x => x.ItemName.ToLower().StartsWith($"{tbKeresNev.Text.ToLower()}") &&
                     x.ItemID.StartsWith($"{tbKeresId.Text}"));
@@ -69,6 +71,7 @@ namespace BRICKS
 
             tbKeresId.TextChanged += (s, e) =>
             {
+
                 if (tbKeresNev.Text != "")
                     dgBricks.ItemsSource = list.Where(x => x.ItemName.ToLower().StartsWith($"{tbKeresNev.Text.ToLower()}")
                     && x.ItemID.StartsWith($"{tbKeresId.Text}"));
@@ -88,6 +91,7 @@ namespace BRICKS
             {
                 dgBricks.ItemsSource = list.Where(x => x.ItemName.ToLower().StartsWith($"{tbKeresNev.Text.ToLower()}")
                         && x.ItemID.StartsWith($"{tbKeresId.Text}") && x.CategoryName == cbKategoriak.SelectedItem.ToString());
+
 
 
                 foreach (Bricks item in dgBricks.Items)
