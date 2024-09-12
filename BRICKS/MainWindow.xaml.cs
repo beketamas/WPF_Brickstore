@@ -20,34 +20,35 @@ namespace BRICKS
     public partial class MainWindow : Window
     {
         ObservableCollection<Bricks> list = [];
+        List<string> kategoriak = [];
         public MainWindow()
         {
             InitializeComponent();
-            dgBricks.ItemsSource = list;
             btnBetoltes.Click += (s, e) =>
             {
                 OpenFileDialog ofd = new OpenFileDialog();
                 if (ofd.ShowDialog() == true)
                 {
-                    try
-                    {
-                        XDocument document = XDocument.Load(ofd.FileName);
+                    XDocument document = XDocument.Load(ofd.FileName);
 
-                        document.Descendants("Item").ToList().ForEach(x =>
-                            list.Add(new Bricks($"{x.Element("ItemID")?.Value};{x.Element("ItemName")?.Value};{x.Element("CategoryName")?.Value};{x.Element("ColorName")?.Value};" +
-                                $"{x.Element("Qty")?.Value}")));
-
-
-                    }
-                    catch (Exception)
-                    {
-
-                        MessageBox.Show("A fájl nem létezik vagy nincs kiválasztva!");
-                    }
-
+                    document.Descendants("Item").ToList().ForEach(x =>
+                        list.Add(new Bricks($"{x.Element("ItemID")?.Value};{x.Element("ItemName")?.Value};{x.Element("CategoryName")?.Value};{x.Element("ColorName")?.Value};" +
+                            $"{x.Element("Qty")?.Value}")));
                 }
-                list.Select(x => x.CategoryName).Distinct().ToList().ForEach(x => cbKategoriak.Items.Add(x));
-                //cbKategoriak.ItemsSource = list.Select(x => x.CategoryName).Distinct().ToList();
+
+                if (list.Count == 0)
+                    MessageBox.Show("Nincs fájl kiválasztva, vagy nem létezik!");
+                else
+                {
+                    dgBricks.ItemsSource = list;
+                    kategoriak.Add("-Alapértelmezett-");
+                    list.Select(x => x.CategoryName).Distinct().OrderBy(x => x).ToList().ForEach(x =>
+                    {
+                        kategoriak.Add(x);
+                    });
+                }
+
+                cbKategoriak.ItemsSource = kategoriak;
             };
 
             tbKeresNev.TextChanged += (s, e) =>
@@ -62,10 +63,15 @@ namespace BRICKS
                     dgBricks.ItemsSource = list.Where(x => x.ItemName.ToLower().StartsWith($"{tbKeresNev.Text.ToLower()}"));
 
 
-                cbKategoriak.Items.Clear();
+                kategoriak.Clear();
+                kategoriak.Add("-Alapértelmezett-");
                 foreach (Bricks item in dgBricks.Items)
                     if (!cbKategoriak.Items.Contains(item.CategoryName))
-                        cbKategoriak.Items.Add(list.Select(x => x.CategoryName).Where(x => x == item.CategoryName).Distinct().ToList().First());
+                    {
+                        kategoriak.Add(list.Select(x => x.CategoryName).Where(x => x == item.CategoryName).Distinct().OrderBy(x => x).ToList().First());
+                    }
+
+                cbKategoriak.ItemsSource = kategoriak;
 
             };
 
@@ -80,23 +86,41 @@ namespace BRICKS
                     dgBricks.ItemsSource = list.Where(x => x.ItemID.StartsWith($"{tbKeresId.Text}"));
 
 
-                cbKategoriak.Items.Clear();
+                kategoriak.Clear();
+                kategoriak.Add("-Alapértelmezett-");
                 foreach (Bricks item in dgBricks.Items)
                     if (!cbKategoriak.Items.Contains(item.CategoryName))
-                        cbKategoriak.Items.Add(list.Select(x => x.CategoryName).Where(x => x == item.CategoryName).Distinct().ToList().First());
+                    {
+                        kategoriak.Add(list.Select(x => x.CategoryName).Where(x => x == item.CategoryName).Distinct().OrderBy(x => x).ToList().First());
+                    }
+
+                cbKategoriak.ItemsSource = kategoriak;
 
             };
 
             cbKategoriak.SelectionChanged += (s, e) =>
             {
-                dgBricks.ItemsSource = list.Where(x => x.ItemName.ToLower().StartsWith($"{tbKeresNev.Text.ToLower()}")
-                        && x.ItemID.StartsWith($"{tbKeresId.Text}") && x.CategoryName == cbKategoriak.SelectedItem.ToString());
+                
+                if (kategoriak[cbKategoriak.SelectedIndex] == "-Alapértelmezett-")
+                {
+                    dgBricks.ItemsSource = list;
+                }
+                else
+                {
+                    dgBricks.ItemsSource = list.Where(x => x.ItemName.ToLower().StartsWith($"{tbKeresNev.Text.ToLower()}")
+                        && x.ItemID.StartsWith($"{tbKeresId.Text}") && x.CategoryName == cbKategoriak.SelectedItem);
+                }
 
-
-
+                kategoriak.Clear();
+                kategoriak.Add("-Alapértelmezett-");
                 foreach (Bricks item in dgBricks.Items)
                     if (!cbKategoriak.Items.Contains(item.CategoryName))
-                        cbKategoriak.Items.Add(list.Select(x => x.CategoryName).Where(x => x == item.CategoryName).Distinct().ToList().First());
+                    {
+                        kategoriak.Add(list.Select(x => x.CategoryName).Where(x => x == item.CategoryName).Distinct().OrderBy(x => x).ToList().First());
+                    }
+
+                cbKategoriak.ItemsSource = kategoriak;
+                
             };
 
             btnTorles.Click += (s, e) =>
